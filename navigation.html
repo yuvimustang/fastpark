@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>routing1</title>
+    <link rel="stylesheet" href="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps.css" type="text/css">
+    <script type="text/javascript" src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/maps/maps-web.min.js"></script>
+    
+    <script type="text/javascript" src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.0/services/services-web.min.js"></script>
+    
+  </head>
+  <body>
+   <div id="map" style="width:60vw; height:60vh"></div>
+
+  <script type="text/javascript">
+    
+    var LISBON =[-9.1393,38.7222];
+    var MADRID =[-3.703790,40.416775];
+
+    const map=tt.map({
+        key:"aRx0TX0fWsqZnAVfJ9bhOeDU6XcFkieD",
+        container:'map',
+        center: [28,50],
+        zoom: 14
+        
+    });
+     map.on('load', () => {
+        new tt.Marker().setLngLat([28,50]).addTo(map);
+         new tt.Marker().setLngLat([28.5,52]).addTo(map);
+    });
+    tt.services.calculateRoute({
+  key: "aRx0TX0fWsqZnAVfJ9bhOeDU6XcFkieD",
+  locations: '28,50:28.5,52'
+}).then(function(routeData) {
+    var geo=routeData.toGeoJson();
+    console.log(routeData);
+    routeLayer=map.addLayer({
+        'id':'route',
+        'type':'line',
+        'source':{
+            'type':'geojson',
+            'data':geo
+        },
+        'paint':{
+            'line-color':'red',
+            'line-width':50
+        }
+        
+    })
+  });
+   </script>
+</body>
+</html>
